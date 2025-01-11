@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Attendant Sleep Optimizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f4f8;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sleep Optimizer</h1>
+        <form id="sleepForm">
+            <label for="from">Flying From:</label>
+            <input type="text" id="from" required>
+
+            <label for="fromDate">Flight Date:</label>
+            <input type="date" id="fromDate" required>
+
+            <label for="fromTime">Flight Time:</label>
+            <input type="time" id="fromTime" required>
+
+            <label for="to">Flying To:</label>
+            <input type="text" id="to" required>
+
+            <label for="arrivalDate">Arrival Date:</label>
+            <input type="date" id="arrivalDate" required>
+
+            <label for="arrivalTime">Arrival Time:</label>
+            <input type="time" id="arrivalTime" required>
+
+            <label for="returnDate">Return Flight Date:</label>
+            <input type="date" id="returnDate" required>
+
+            <label for="returnTime">Return Flight Time:</label>
+            <input type="time" id="returnTime" required>
+
+            <button type="button" onclick="calculateSleepSchedule()">Submit</button>
+        </form>
+
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        function calculateSleepSchedule() {
+            const output = document.getElementById('output');
+
+            // Placeholder example response
+            const schedule = `
+                <p><strong>Sleep Recommendations:</strong></p>
+                <ul>
+                    <li>Upon arrival: Sleep for 3-4 hours to recover from travel fatigue.</li>
+                    <li>First night: Go to bed at 10:00 PM local time.</li>
+                    <li>Second night: Adjust bedtime to 9:30 PM local time.</li>
+                    <li>Third night: Continue sleeping at 9:30 PM for optimal alignment before departure.</li>
+                </ul>
+            `;
+
+            output.innerHTML = schedule;
+        }
+    </script>
+</body>
+</html>
