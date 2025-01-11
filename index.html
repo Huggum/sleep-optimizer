@@ -105,21 +105,52 @@
     </div>
 
     <script>
-        function calculateSleepSchedule() {
+        async function calculateSleepSchedule() {
             const output = document.getElementById('output');
+            output.innerHTML = "Calculating...";
 
-            // Placeholder example response
-            const schedule = `
-                <p><strong>Sleep Recommendations:</strong></p>
-                <ul>
-                    <li>Upon arrival: Sleep for 3-4 hours to recover from travel fatigue.</li>
-                    <li>First night: Go to bed at 10:00 PM local time.</li>
-                    <li>Second night: Adjust bedtime to 9:30 PM local time.</li>
-                    <li>Third night: Continue sleeping at 9:30 PM for optimal alignment before departure.</li>
-                </ul>
+            // Collect user inputs
+            const from = document.getElementById('from').value;
+            const fromDate = document.getElementById('fromDate').value;
+            const fromTime = document.getElementById('fromTime').value;
+            const to = document.getElementById('to').value;
+            const arrivalDate = document.getElementById('arrivalDate').value;
+            const arrivalTime = document.getElementById('arrivalTime').value;
+            const arrivalHotelTime = document.getElementById('arrivalHotelTime').value;
+            const returnDate = document.getElementById('returnDate').value;
+            const returnLocation = document.getElementById('returnLocation').value;
+            const wakeUpTime = document.getElementById('wakeUpTime').value;
+            const showTime = document.getElementById('showTime').value;
+            const flightDepartureTime = document.getElementById('flightDepartureTime').value;
+
+            // Create prompt for the API
+            const prompt = `
+                Based on a flight from ${from} to ${to}, departing on ${fromDate} at ${fromTime}, 
+                arriving on ${arrivalDate} at ${arrivalTime}, with hotel arrival time ${arrivalHotelTime}. 
+                Return flight from ${returnLocation} on ${returnDate} at ${flightDepartureTime}, 
+                and a wake-up time of ${wakeUpTime}, create a sleep schedule to ensure full rest for the return flight.
             `;
 
-            output.innerHTML = schedule;
+            // Hugging Face API request
+            try {
+                const response = await fetch('https://api-inference.huggingface.co/models/gpt2', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer <YOUR_API_KEY_HERE>', // Your token
+                    },
+                    body: JSON.stringify({ inputs: prompt }),
+                });
+
+                const data = await response.json();
+
+                // Display result
+                const schedule = data[0]?.generated_text || 'No schedule available. Please try again.';
+                output.innerHTML = `<p><strong>Sleep Recommendations:</strong></p><p>${schedule}</p>`;
+            } catch (error) {
+                console.error('Error:', error);
+                output.innerHTML = '<p>An error occurred while fetching the sleep schedule. Please try again later.</p>';
+            }
         }
     </script>
 </body>
