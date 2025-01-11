@@ -68,23 +68,35 @@
             <label for="fromDate">Flight Date:</label>
             <input type="date" id="fromDate" required>
 
-            <label for="fromTime">Flight Time:</label>
+            <label for="fromTime">Local Departure Time:</label>
             <input type="time" id="fromTime" required>
 
             <label for="to">Flying To:</label>
             <input type="text" id="to" required>
 
-            <label for="arrivalDate">Arrival Date:</label>
+            <label for="arrivalDate">Flight Arrival Date:</label>
             <input type="date" id="arrivalDate" required>
 
-            <label for="arrivalTime">Arrival Time:</label>
+            <label for="arrivalTime">Flight Arrival Time:</label>
             <input type="time" id="arrivalTime" required>
+
+            <label for="arrivalHotelTime">Arrival Time to Hotel Room:</label>
+            <input type="time" id="arrivalHotelTime" required>
 
             <label for="returnDate">Return Flight Date:</label>
             <input type="date" id="returnDate" required>
 
-            <label for="returnTime">Return Flight Time:</label>
-            <input type="time" id="returnTime" required>
+            <label for="returnLocation">Return Location:</label>
+            <input type="text" id="returnLocation" required>
+
+            <label for="wakeUpTime">Wake Up Time:</label>
+            <input type="time" id="wakeUpTime" required>
+
+            <label for="showTime">Show Time:</label>
+            <input type="time" id="showTime" required>
+
+            <label for="flightDepartureTime">Flight Departure Time:</label>
+            <input type="time" id="flightDepartureTime" required>
 
             <button type="button" onclick="calculateSleepSchedule()">Submit</button>
         </form>
