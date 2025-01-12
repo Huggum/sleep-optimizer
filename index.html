@@ -1,157 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flight Attendant Sleep Optimizer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f4f8;
-        }
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 400px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        label {
-            display: block;
-            margin: 15px 0 5px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .output {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Attendant Sleep Optimizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #output {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Sleep Optimizer</h1>
-        <form id="sleepForm">
-            <label for="from">Flying From:</label>
-            <input type="text" id="from" required>
-
-            <label for="fromDate">Flight Date:</label>
-            <input type="date" id="fromDate" required>
-
-            <label for="fromTime">Local Departure Time:</label>
-            <input type="time" id="fromTime" required>
-
-            <label for="to">Flying To:</label>
-            <input type="text" id="to" required>
-
-            <label for="arrivalDate">Flight Arrival Date:</label>
-            <input type="date" id="arrivalDate" required>
-
-            <label for="arrivalTime">Flight Arrival Time:</label>
-            <input type="time" id="arrivalTime" required>
-
-            <label for="arrivalHotelTime">Arrival Time to Hotel Room:</label>
-            <input type="time" id="arrivalHotelTime" required>
-
-            <label for="returnDate">Return Flight Date:</label>
-            <input type="date" id="returnDate" required>
-
-            <label for="returnLocation">Return Location:</label>
-            <input type="text" id="returnLocation" required>
-
-            <label for="wakeUpTime">Wake Up Time:</label>
-            <input type="time" id="wakeUpTime" required>
-
-            <label for="showTime">Show Time:</label>
-            <input type="time" id="showTime" required>
-
-            <label for="flightDepartureTime">Flight Departure Time:</label>
-            <input type="time" id="flightDepartureTime" required>
-
-            <button type="button" onclick="calculateSleepSchedule()">Submit</button>
-        </form>
-
-        <div class="output" id="output"></div>
+  <h1>Flight Attendant Sleep Optimizer</h1>
+  <form id="sleepForm">
+    <div class="form-group">
+      <label for="departingFrom">Departing From (Airport Code)</label>
+      <input type="text" id="departingFrom" required>
     </div>
+    <div class="form-group">
+      <label for="departureDate">Departure Date</label>
+      <input type="date" id="departureDate" required>
+    </div>
+    <div class="form-group">
+      <label for="arrivalAirport">Arrival Airport (Airport Code)</label>
+      <input type="text" id="arrivalAirport" required>
+    </div>
+    <div class="form-group">
+      <label for="arrivalTime">Scheduled Arrival Time (24h Format)</label>
+      <input type="time" id="arrivalTime" required>
+    </div>
+    <div class="form-group">
+      <label for="arrivalTimeToHotelRoom">Estimated Time of Arrival to Hotel Room (24h Format)</label>
+      <input type="time" id="arrivalTimeToHotelRoom" required>
+    </div>
+    <div class="form-group">
+      <label for="totalSleepPreviousNight">Total Sleep from Previous Night (Hours)</label>
+      <input type="number" id="totalSleepPreviousNight" min="0" max="15" required>
+    </div>
+    <div class="form-group">
+      <label for="wakeUpTime">Wake-Up Time (24h Format)</label>
+      <input type="time" id="wakeUpTime" required>
+    </div>
+    <div class="form-group">
+      <label for="showTime">Show Time (24h Format)</label>
+      <input type="time" id="showTime" required>
+    </div>
+    <button type="submit">Generate Sleep Schedule</button>
+  </form>
 
-    <script>
-        async function calculateSleepSchedule() {
-            const output = document.getElementById('output');
-            output.innerHTML = "Calculating...";
+  <div id="output"></div>
 
-            // Collect user inputs
-            const from = document.getElementById('from').value;
-            const fromDate = document.getElementById('fromDate').value;
-            const fromTime = document.getElementById('fromTime').value;
-            const to = document.getElementById('to').value;
-            const arrivalDate = document.getElementById('arrivalDate').value;
-            const arrivalTime = document.getElementById('arrivalTime').value;
-            const arrivalHotelTime = document.getElementById('arrivalHotelTime').value;
-            const returnDate = document.getElementById('returnDate').value;
-            const returnLocation = document.getElementById('returnLocation').value;
-            const wakeUpTime = document.getElementById('wakeUpTime').value;
-            const showTime = document.getElementById('showTime').value;
-            const flightDepartureTime = document.getElementById('flightDepartureTime').value;
+  <script>
+    document.getElementById("sleepForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-            // Create prompt for the API
-            const prompt = `
-                Based on a flight from ${from} to ${to}, departing on ${fromDate} at ${fromTime}, 
-                arriving on ${arrivalDate} at ${arrivalTime}, with hotel arrival time ${arrivalHotelTime}. 
-                Return flight from ${returnLocation} on ${returnDate} at ${flightDepartureTime}, 
-                and a wake-up time of ${wakeUpTime}, create a sleep schedule to ensure full rest for the return flight.
-            `;
+      // Collecting input values
+      const data = {
+        departingFrom: document.getElementById("departingFrom").value,
+        departureDate: document.getElementById("departureDate").value,
+        arrivalAirport: document.getElementById("arrivalAirport").value,
+        arrivalTime: document.getElementById("arrivalTime").value,
+        arrivalTimeToHotelRoom: document.getElementById("arrivalTimeToHotelRoom").value,
+        totalSleepPreviousNight: parseInt(document.getElementById("totalSleepPreviousNight").value),
+        wakeUpTime: document.getElementById("wakeUpTime").value,
+        showTime: document.getElementById("showTime").value,
+      };
 
-            // Hugging Face API request
-            try {
-                const response = await fetch('https://api-inference.huggingface.co/models/gpt2', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer <YOUR_API_KEY_HERE>', // Your token
-                    },
-                    body: JSON.stringify({ inputs: prompt }),
-                });
+      // Function to generate the sleep schedule
+      function generateSleepSchedule(data) {
+        const schedule = [];
+        const { 
+          departingFrom, departureDate, arrivalAirport, arrivalTime, 
+          arrivalTimeToHotelRoom, totalSleepPreviousNight, wakeUpTime, showTime 
+        } = data;
 
-                const data = await response.json();
+        schedule.push(`Departing From: ${departingFrom} On: ${departureDate}`);
+        schedule.push(`Scheduled to arrive in: ${arrivalAirport} At: ${arrivalTime}`);
+        schedule.push(`Estimated time of arrival to the hotel at: ${arrivalTimeToHotelRoom}`);
+        schedule.push(`Total sleep from previous night: ${totalSleepPreviousNight} hours`);
+        schedule.push("");
 
-                // Display result
-                const schedule = data[0]?.generated_text || 'No schedule available. Please try again.';
-                output.innerHTML = `<p><strong>Sleep Recommendations:</strong></p><p>${schedule}</p>`;
-            } catch (error) {
-                console.error('Error:', error);
-                output.innerHTML = '<p>An error occurred while fetching the sleep schedule. Please try again later.</p>';
-            }
-        }
-    </script>
+        schedule.push(`Tonight (based on arrival and sleep duration):`);
+        const bedtime = 22; // Assume 10 PM bedtime
+        const sleepDuration = totalSleepPreviousNight < 7 ? "aim for 7-8 hours" : "aim for 6-7 hours";
+        schedule.push(`- Target Bedtime: Aim for ${bedtime}:00–23:00 local time.`);
+        schedule.push(`- Sleep Duration: ${sleepDuration}.`);
+        schedule.push("- Preparation: Avoid caffeine after 6pm and wind down before bed.");
+        schedule.push("");
+
+        schedule.push("Tomorrow Morning:");
+        schedule.push(`- Wake-Up Time: Try to wake up by ${wakeUpTime} local time.`);
+        schedule.push("- Exposure: Get 30 minutes of natural sunlight after waking.");
+        schedule.push("- Stay active to stay alert and avoid taking naps.");
+        schedule.push("");
+
+        schedule.push("Tomorrow Night:");
+        schedule.push("- Target Bedtime: Aim for 22:00–23:00 local time.");
+        schedule.push("- Wind Down: Begin relaxing by 9 PM to prepare for early wake-up.");
+        schedule.push("- Avoid screens and heavy meals after 8 PM.");
+        schedule.push("");
+
+        schedule.push("Return Flight Day:");
+        schedule.push(`- Wake-Up Time: Set your alarm for ${showTime} local time.`);
+        schedule.push("- Eat a light, nutritious breakfast.");
+        schedule.push("- Avoid caffeine overload to not disrupt your sleep cycle later.");
+        schedule.push("");
+
+        schedule.push("Additional Tips:");
+        schedule.push("- Hydration: Drink plenty of water, but avoid excessive water intake before bed.");
+        schedule.push("- Naps: If needed, take a short 20–30-minute nap before 2 PM.");
+        schedule.push("- Melatonin: Consider taking a low dose (0.5–1 mg) of melatonin 30 minutes before bed.");
+
+        return schedule.join("\n");
+      }
+
+      // Generate and display the schedule
+      const sleepSchedule = generateSleepSchedule(data);
+      document.getElementById("output").textContent = sleepSchedule;
+    });
+  </script>
 </body>
 </html>
