@@ -4,131 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sleep Optimizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="date"], input[type="number"], input[type="time"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
 </head>
 <body>
     <h1>Sleep Optimizer</h1>
-
     <form id="sleepForm">
         <h2>Itinerary</h2>
 
         <h3>Leg 1</h3>
-        <label for="departingFrom1">Departing From (Airport Code):</label>
-        <input type="text" id="departingFrom1" required><br><br>
+        <label for="leg1_departingFrom">Departing From (Airport Code)</label>
+        <input type="text" id="leg1_departingFrom" name="leg1_departingFrom" required>
 
-        <label for="departureDate1">Departure Date:</label>
-        <input type="date" id="departureDate1" required><br><br>
+        <label for="leg1_departureDate">Departure Date</label>
+        <input type="date" id="leg1_departureDate" name="leg1_departureDate" required>
 
-        <label for="arrivalAirport1">Arrival Airport (Airport Code):</label>
-        <input type="text" id="arrivalAirport1" required><br><br>
+        <label for="leg1_arrivalAirport">Arrival Airport (Airport Code)</label>
+        <input type="text" id="leg1_arrivalAirport" name="leg1_arrivalAirport" required>
 
-        <label for="arrivalTime1">Scheduled Flight Arrival (Local Time):</label>
-        <input type="time" id="arrivalTime1" required><br><br>
+        <label for="leg1_scheduledArrivalTime">Scheduled Flight Arrival (Local Time)</label>
+        <input type="time" id="leg1_scheduledArrivalTime" name="leg1_scheduledArrivalTime" required>
 
-        <label for="arrivalTimeToHotelRoom1">Estimated Time of Arrival to Hotel Room (Local Time):</label>
-        <input type="time" id="arrivalTimeToHotelRoom1" required><br><br>
+        <label for="leg1_hotelArrivalTime">Estimated Time of Arrival to Hotel Room (Local Time)</label>
+        <input type="time" id="leg1_hotelArrivalTime" name="leg1_hotelArrivalTime" required>
 
         <h3>Leg 2</h3>
-        <label for="departingFrom2">Departing From (Airport Code):</label>
-        <input type="text" id="departingFrom2" required><br><br>
+        <label for="leg2_departingFrom">Departing From (Airport Code)</label>
+        <input type="text" id="leg2_departingFrom" name="leg2_departingFrom" required>
 
-        <label for="departureDate2">Departure Date:</label>
-        <input type="date" id="departureDate2" required><br><br>
+        <label for="leg2_departureDate">Departure Date</label>
+        <input type="date" id="leg2_departureDate" name="leg2_departureDate" required>
 
-        <label for="departureTime2">Scheduled Flight Departure Time (Local Time):</label>
-        <input type="time" id="departureTime2" required><br><br>
+        <label for="leg2_flightDepartureTime">Scheduled Flight Departure Time (Local Time)</label>
+        <input type="time" id="leg2_flightDepartureTime" name="leg2_flightDepartureTime" required>
 
-        <label for="arrivalAirport2">Arrival Airport (Airport Code):</label>
-        <input type="text" id="arrivalAirport2" required><br><br>
+        <label for="leg2_arrivalAirport">Arrival Airport (Airport Code)</label>
+        <input type="text" id="leg2_arrivalAirport" name="leg2_arrivalAirport" required>
 
-        <label for="wakeUpTime2">Scheduled Wake-Up Time (Local Time):</label>
-        <input type="time" id="wakeUpTime2" required><br><br>
+        <label for="leg2_wakeUpTime">Scheduled Wake-Up Time (Local Time)</label>
+        <input type="time" id="leg2_wakeUpTime" name="leg2_wakeUpTime" required>
 
-        <label for="showTime2">Scheduled Show Time (Local Time):</label>
-        <input type="time" id="showTime2" required><br><br>
+        <label for="leg2_showTime">Scheduled Show Time (Local Time)</label>
+        <input type="time" id="leg2_showTime" name="leg2_showTime" required>
 
-        <label for="arrivalTime2">Scheduled Flight Arrival Time (Local Time):</label>
-        <input type="time" id="arrivalTime2" required><br><br>
+        <label for="leg2_flightArrivalTime">Scheduled Flight Arrival Time (Local Time)</label>
+        <input type="time" id="leg2_flightArrivalTime" name="leg2_flightArrivalTime" required>
 
-        <button type="submit">Generate Sleep Schedule</button>
+        <label for="previousSleepDuration">Total Sleep from Previous Night (Hours)</label>
+        <input type="number" id="previousSleepDuration" name="previousSleepDuration" min="0" max="15" required>
+
+        <button type="submit">Calculate Sleep Schedule</button>
     </form>
 
-    <h2>Sleep Schedule</h2>
-    <pre id="output"></pre>
+    <div id="output"></div>
 
     <script>
         document.getElementById("sleepForm").addEventListener("submit", function (event) {
-    event.preventDefault();
+            event.preventDefault();
 
-    const formData = new FormData(event.target);
+            const formData = new FormData(event.target);
 
-    const leg1 = {
-        departingFrom: formData.get("leg1_departingFrom"),
-        departureDate: formData.get("leg1_departureDate"),
-        arrivalAirport: formData.get("leg1_arrivalAirport"),
-        scheduledArrivalTime: formData.get("leg1_scheduledArrivalTime"),
-        hotelArrivalTime: formData.get("leg1_hotelArrivalTime"),
-    };
+            const leg1 = {
+                departingFrom: formData.get("leg1_departingFrom"),
+                departureDate: formData.get("leg1_departureDate"),
+                arrivalAirport: formData.get("leg1_arrivalAirport"),
+                scheduledArrivalTime: formData.get("leg1_scheduledArrivalTime"),
+                hotelArrivalTime: formData.get("leg1_hotelArrivalTime"),
+            };
 
-    const leg2 = {
-        departingFrom: formData.get("leg2_departingFrom"),
-        departureDate: formData.get("leg2_departureDate"),
-        flightDepartureTime: formData.get("leg2_flightDepartureTime"),
-        arrivalAirport: formData.get("leg2_arrivalAirport"),
-        wakeUpTime: formData.get("leg2_wakeUpTime"),
-        showTime: formData.get("leg2_showTime"),
-        flightArrivalTime: formData.get("leg2_flightArrivalTime"),
-    };
+            const leg2 = {
+                departingFrom: formData.get("leg2_departingFrom"),
+                departureDate: formData.get("leg2_departureDate"),
+                flightDepartureTime: formData.get("leg2_flightDepartureTime"),
+                arrivalAirport: formData.get("leg2_arrivalAirport"),
+                wakeUpTime: formData.get("leg2_wakeUpTime"),
+                showTime: formData.get("leg2_showTime"),
+                flightArrivalTime: formData.get("leg2_flightArrivalTime"),
+            };
 
-    const previousSleepDuration = formData.get("previousSleepDuration");
+            const previousSleepDuration = formData.get("previousSleepDuration");
 
-    const output = analyzeSleepSchedule(leg1, leg2, previousSleepDuration);
+            const output = analyzeSleepSchedule(leg1, leg2, previousSleepDuration);
 
-    document.getElementById("output").innerHTML = `<pre>${output.join("\n")}</pre>`;
-});
+            document.getElementById("output").innerHTML = `<pre>${output.join("\n")}</pre>`;
+        });
 
-function analyzeSleepSchedule(leg1, leg2, previousSleepDuration) {
-    const schedule = [];
+        function analyzeSleepSchedule(leg1, leg2, previousSleepDuration) {
+            const schedule = [];
 
-    // Leg 1 Analysis
-    schedule.push("Leg 1 Analysis:");
-    schedule.push(`- Departing From: ${leg1.departingFrom} on ${leg1.departureDate}`);
-    schedule.push(`- Arriving in: ${leg1.arrivalAirport} at ${leg1.scheduledArrivalTime}`);
-    schedule.push(`- Estimated Hotel Arrival: ${leg1.hotelArrivalTime}`);
-    schedule.push("");
+            // Leg 1 Analysis
+            schedule.push("Leg 1 Analysis:");
+            schedule.push(`- Departing From: ${leg1.departingFrom} on ${leg1.departureDate}`);
+            schedule.push(`- Arriving in: ${leg1.arrivalAirport} at ${leg1.scheduledArrivalTime}`);
+            schedule.push(`- Estimated Hotel Arrival: ${leg1.hotelArrivalTime}`);
+            schedule.push("");
 
-    // Rest Analysis After Leg 1
-    const hotelArrivalTime = new Date(`${leg1.departureDate}T${leg1.hotelArrivalTime}:00`);
-    schedule.push("Rest Recommendations Post Leg 1:");
-    schedule.push(`- Sleep Duration Before Flight: ${previousSleepDuration} hours.`);
-    schedule.push("- If arriving at the hotel late, aim to get at least 5-6 hours of sleep.");
-    schedule.push("- Avoid caffeine 4 hours before sleeping.");
-    schedule.push("");
+            // Rest Analysis After Leg 1
+            schedule.push("Rest Recommendations Post Leg 1:");
+            schedule.push(`- Sleep Duration Before Flight: ${previousSleepDuration} hours.`);
+            schedule.push("- If arriving at the hotel late, aim to get at least 5-6 hours of sleep.");
+            schedule.push("- Avoid caffeine 4 hours before sleeping.");
+            schedule.push("");
 
-    // Leg 2 Analysis
-    schedule.push("Leg 2 Analysis:");
-    schedule.push(`- Departing From: ${leg2.departingFrom} on ${leg2.departureDate}`);
-    schedule.push(`- Flight Departs at: ${leg2.flightDepartureTime}`);
-    schedule.push(`- Arriving in: ${leg2.arrivalAirport} at ${leg2.flightArrivalTime}`);
-    schedule.push("");
+            // Leg 2 Analysis
+            schedule.push("Leg 2 Analysis:");
+            schedule.push(`- Departing From: ${leg2.departingFrom} on ${leg2.departureDate}`);
+            schedule.push(`- Flight Departs at: ${leg2.flightDepartureTime}`);
+            schedule.push(`- Arriving in: ${leg2.arrivalAirport} at ${leg2.flightArrivalTime}`);
+            schedule.push("");
 
-    // Sleep and Show Time
-    const wakeUpTime = new Date(`${leg2.departureDate}T${leg2.wakeUpTime}:00`);
-    schedule.push("Recommendations for Leg 2 Preparation:");
-    schedule.push(`- Wake-Up Time: ${leg2.wakeUpTime}`);
-    schedule.push(`- Show Time: ${leg2.showTime}`);
-    schedule.push("- Ensure to align your sleep schedule to wake up at least 2 hours before show time.");
-    schedule.push("");
+            // Sleep and Show Time
+            schedule.push("Recommendations for Leg 2 Preparation:");
+            schedule.push(`- Wake-Up Time: ${leg2.wakeUpTime}`);
+            schedule.push(`- Show Time: ${leg2.showTime}`);
+            schedule.push("- Ensure to align your sleep schedule to wake up at least 2 hours before show time.");
+            schedule.push("");
 
-    // Additional Tips
-    schedule.push("Additional Tips:");
-    schedule.push("- Stay hydrated but avoid heavy meals before sleep.");
-    schedule.push("- Use blackout curtains or eye masks if hotel arrival is during the day.");
-    schedule.push("- Short naps (20–30 minutes) are okay but avoid them after 3pm.");
-    schedule.push("");
+            // Additional Tips
+            schedule.push("Additional Tips:");
+            schedule.push("- Stay hydrated but avoid heavy meals before sleep.");
+            schedule.push("- Use blackout curtains or eye masks if hotel arrival is during the day.");
+            schedule.push("- Short naps (20–30 minutes) are okay but avoid them after 3pm.");
+            schedule.push("");
 
-    return schedule;
-}
-
+            return schedule;
+        }
     </script>
 </body>
 </html>
