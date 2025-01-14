@@ -42,32 +42,43 @@
     <h2>Itinerary</h2>
     <fieldset>
       <legend>Outbound Flight Information</legend>
-      <label for="fromAirport">What Airport Are You Leaving From? (Airport Code)</label>
-      <input type="text" id="fromAirport" name="fromAirport" required>
-      <label for="departureDate">What Date Are You Departing? (AM/PM)</label>
-      <input type="text" id="departureDate" name="departureDate" required>
-      <label for="toAirport">What Airport Will You Be Arriving At? (Arrival Airport Code)</label>
-      <input type="text" id="toAirport" name="toAirport" required>
-      <label for="arrivalTime">What Time Is Your Flight Scheduled To Land? (Flight Arrival Local Time AM/PM)</label>
-      <input type="text" id="arrivalTime" name="arrivalTime" required>
+      <label for="fromAirport">What Airport Are You Leaving From? (3-letter Airport Code)</label>
+      <input type="text" id="fromAirport" name="fromAirport" pattern="[A-Z]{3}" title="Enter a valid 3-letter airport code" required>
+      
+      <label for="departureDate">What Date Are You Departing?</label>
+      <input type="date" id="departureDate" name="departureDate" required>
+      
+      <label for="toAirport">What Airport Will You Be Arriving At? (3-letter Airport Code)</label>
+      <input type="text" id="toAirport" name="toAirport" pattern="[A-Z]{3}" title="Enter a valid 3-letter airport code" required>
+      
+      <label for="arrivalTime">What Time Is Your Flight Scheduled To Land? (Local Time AM/PM)</label>
+      <input type="time" id="arrivalTime" name="arrivalTime" required>
+      
       <label for="hotelArrival">What Time Will You Arrive At the Hotel Room? (AM/PM)</label>
-      <input type="text" id="hotelArrival" name="hotelArrival" required>
+      <input type="time" id="hotelArrival" name="hotelArrival" required>
     </fieldset>
+    
     <fieldset>
       <legend>Inbound Flight Information</legend>
-      <label for="returnFromAirport">What Airport Will You Be Departing From? (Airport Code)</label>
-      <input type="text" id="returnFromAirport" name="returnFromAirport" required>
-      <label for="returnDate">What Date Are You Departing? (AM/PM)</label>
-      <input type="text" id="returnDate" name="returnDate" required>
-      <label for="returnDepartureTime">What Time Is Your Flight Scheduled To Depart? (Scheduled Flight Departure Local Time)</label>
-      <input type="text" id="returnDepartureTime" name="returnDepartureTime" required>
-      <label for="wakeUpTime">What Time Is Your Scheduled Wake-Up Time? (AM/PM Local Time)</label>
-      <input type="text" id="wakeUpTime" name="wakeUpTime" required>
-      <label for="showTime">What Time Is Your Scheduled Show Time? (AM/PM Local Time)</label>
-      <input type="text" id="showTime" name="showTime" required>
+      <label for="returnFromAirport">What Airport Will You Be Departing From? (3-letter Airport Code)</label>
+      <input type="text" id="returnFromAirport" name="returnFromAirport" pattern="[A-Z]{3}" title="Enter a valid 3-letter airport code" required>
+      
+      <label for="returnDate">What Date Are You Departing?</label>
+      <input type="date" id="returnDate" name="returnDate" required>
+      
+      <label for="returnDepartureTime">What Time Is Your Flight Scheduled To Depart? (Local Time AM/PM)</label>
+      <input type="time" id="returnDepartureTime" name="returnDepartureTime" required>
+      
+      <label for="wakeUpTime">What Time Is Your Scheduled Wake-Up Time? (AM/PM)</label>
+      <input type="time" id="wakeUpTime" name="wakeUpTime" required>
+      
+      <label for="showTime">What Time Is Your Scheduled Show Time? (AM/PM)</label>
+      <input type="time" id="showTime" name="showTime" required>
     </fieldset>
+    
     <button type="submit">Get Sleep Schedule</button>
   </form>
+  
   <div id="output"></div>
   <script src="script.js"></script>
 </body>
