@@ -32,8 +32,14 @@ document.getElementById("sleepForm").addEventListener("submit", async (event) =>
     });
 
     const result = await response.json();
-    document.getElementById("output").innerHTML = `<h2>Recommended Sleep Schedule</h2><pre>${JSON.stringify(result, null, 2)}</pre>`;
+    document.getElementById("output").innerHTML = `
+      <h2>Recommended Sleep Schedule</h2>
+      <pre>${JSON.stringify(result, null, 2)}</pre>
+    `;
   } catch (error) {
-    document.getElementById("output").innerHTML = `<h2>Error</h2><p>${error.message}</p>`;
+    document.getElementById("output").innerHTML = `
+      <h2>Error</h2>
+      <p>${error.message}</p>
+    `;
   }
 });
