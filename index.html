@@ -34,6 +34,11 @@
     button:hover {
       background-color: #218838;
     }
+    #output {
+      margin-top: 20px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
@@ -80,6 +85,43 @@
   </form>
   
   <div id="output"></div>
-  <script src="script.js"></script>
+
+  <script>
+    document.getElementById('sleepForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevents the default form submission
+
+      // Collect form data
+      const formData = {
+        fromAirport: document.getElementById('fromAirport').value,
+        departureDate: document.getElementById('departureDate').value,
+        toAirport: document.getElementById('toAirport').value,
+        arrivalTime: document.getElementById('arrivalTime').value,
+        hotelArrival: document.getElementById('hotelArrival').value,
+        returnFromAirport: document.getElementById('returnFromAirport').value,
+        returnDate: document.getElementById('returnDate').value,
+        returnDepartureTime: document.getElementById('returnDepartureTime').value,
+        wakeUpTime: document.getElementById('wakeUpTime').value,
+        showTime: document.getElementById('showTime').value
+      };
+
+      // Send the data to the backend API
+      fetch('http://localhost:3000/generate-sleep-schedule', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => response.json())  // Parse the JSON response
+      .then(data => {
+        // Display the result in the 'output' div
+        document.getElementById('output').innerHTML = `
+          <h3>Generated Sleep Schedule:</h3>
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
 </body>
 </html>
